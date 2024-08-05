@@ -8,7 +8,8 @@
 [[main]]
   name = "Grimoire"
   identifier = "Docs"
-  url = "/docs/guides/example-guide/"
+  #url = "/docs/guides/example-guide/"
+  url = "/docs/guides/bonnes-pratiques/"
   weight = 10
 
 [[main]]
