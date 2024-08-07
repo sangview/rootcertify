@@ -21,14 +21,16 @@
 
 [[main]]
   name = "Virtualisation"
-  url = "/Virtualisation/"
+  #url = "/Virtualisation/"
+  url = "/categories/Virtualisation/"
   parent = "Blog"
   identifier = "Virtualisation"
   weight = 15
 
 [[main]]
   name = "Scripts"
-  url = "/Scripts/"
+  #url = "/Scripts/"
+  url = "/categories/Scripts/"
   parent = "Blog"
   identifier = "Scripts"
   weight = 10
@@ -36,7 +38,8 @@
 
 [[main]]
   name = "Cloud"
-  url = "/Cloud/"
+  #url = "/Cloud/"
+  url = "/categories/Cloud/"
   parent = "Blog"
   identifier = "Cloud"
   weight = 20
@@ -46,7 +49,25 @@
   url = "/IA/"
   parent = "Blog"
   identifier = "IA"
-  weight = 25
+  weight = 20
+
+# categories/technologie/
+# /cloud-computing/
+# Citrix
+
+## [[main]]
+##   name = "Cloud computing"
+##   url = "/categories/cloud-computing/"
+##   parent = "Blog"
+##   identifier = "cloud-computing"
+##   weight = 11
+##
+##   [[main]]
+##   name = "Citrix"
+##   url = "/categories/Citrix/"
+##   parent = "Blog"
+##   identifier = "Citrix"
+##   weight = 12
 
 [[social]]
   name = "linkedin"

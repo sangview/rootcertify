@@ -7,7 +7,8 @@ lastmod: 2023-09-07T16:27:22+02:00
 draft: false
 weight: 50
 tags: ["Cloud", "Hybrid Cloud", "Multi-Cloud", "Stratégies IT", "Cas d'Usage", "AWS", "Azure"]
-categories: ["Technologie", "Cloud Computing"]
+#categories: ["Technologie", "Cloud Computing"]
+categories: ["Cloud"]
 contributors: []
 pinned: false
 homepage: false
