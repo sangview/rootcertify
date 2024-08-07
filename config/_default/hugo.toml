@@ -14,11 +14,6 @@ paginate = 10
 rssLimit = 10
 summarylength = 20 # 70 (default)
 
-#############
-# baseURL: https://github.com/sangview/rootcertify.git
-# theme: lenomdevotrethème
-#############
-
 # Multilingual
 defaultContentLanguage = "en"
 disableLanguages = ["de", "nl"]

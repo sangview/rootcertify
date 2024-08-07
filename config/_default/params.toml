@@ -1,6 +1,6 @@
 # Hugo
-title = "My Docs"
-description = "Congrats on setting up a new Doks project!"
+title = "Root Certify"
+description = "Mes notes ouvertes à mes heures libres !"
 images = ["cover.png"]
 
 # mainSections
@@ -104,7 +104,7 @@ mainSections = ["docs"]
 [hyas_images]
   [hyas_images.defaults]
     decoding = "async" # sync, async, or auto (default)
-    fetchpriority = "auto" # high, low, or auto (default) 
+    fetchpriority = "auto" # high, low, or auto (default)
     loading = "lazy" # eager or lazy (default)
     widths = [480, 576, 768, 1025, 1200, 1440] # [640, 768, 1024, 1366, 1600, 1920] for example
     sizes = "auto" # 100vw (default), 75vw, or auto for example
@@ -128,10 +128,12 @@ mainSections = ["docs"]
     maskIconColor = "white" # white (default)
   [seo.schemas]
     type = "Organization" # Organization (default) or Person
-    logo = "favicon-512x512.png" # Logo of Organization — favicon-512x512.png (default)
+    #logo = "favicon-512x512.png" # Logo of Organization — favicon-512x512.png (default)
+    logo = "adama.jfif"
     name = "Hyas" # Name of Organization or Person
     sameAs = [] # E.g. ["https://github.com/gethyas/hyas", "https://fosstodon.org/@hyas"]
-    images = ["cover.png"] # ["cover.png"] (default)
+    #images = ["cover.png"] # ["cover.png"] (default)
+    images = ["adama.jfif"]
     article = [] # Article sections
     newsArticle = [] # NewsArticle sections
     blogPosting = ["blog"] # BlogPosting sections
