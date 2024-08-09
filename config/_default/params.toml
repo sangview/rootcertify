@@ -123,18 +123,18 @@ mainSections = ["docs"]
     suffix = ""
   [seo.favicons]
     sizes = []
-    icon = "favicon.png" # favicon.png (default)
+    icon = "Root.png" # favicon.png (default)
     svgIcon = "favicon.svg" # favicon.svg (default)
     maskIcon = "mask-icon.svg" # mask-icon.svg (default)
     maskIconColor = "white" # white (default)
   [seo.schemas]
     type = "Organization" # Organization (default) or Person
     #logo = "favicon-512x512.png" # Logo of Organization — favicon-512x512.png (default)
-    logo = "adama.jfif"
+    logo = "Root.png"
     name = "Adama SANGARE" # Name of Organization or Person
     sameAs = [] # E.g. ["https://github.com/gethyas/hyas", "https://fosstodon.org/@hyas"]
     #images = ["cover.png"] # ["cover.png"] (default)
-    images = ["adama.jfif"]
+    images = ["Root.png"]
     article = [] # Article sections
     newsArticle = [] # NewsArticle sections
     blogPosting = ["blog"] # BlogPosting sections
