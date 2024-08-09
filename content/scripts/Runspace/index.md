@@ -1,7 +1,7 @@
 ---
 title: "Runspace Introduction"
 description: ""
-summary: "Un Runspace dans est un espace d'exécution qui permet d'exécuter du code PowerShell de manière isolée et parallèle."
+summary: "Un Runspace est un espace d'exécution qui permet d'exécuter du code PowerShell de manière isolée et parallèle."
 date: 2023-09-07T16:21:44+02:00
 lastmod: 2023-09-07T16:21:44+02:00
 draft: false
@@ -77,7 +77,7 @@ Afin de décourvir les possiblilités avancées offertes par les runspaces, je v
 
 ## Création d'un runspace
 
-Il y a plusieurs façon de créer et gérer les runspaces mais la façon la plus simple de créer un runspace est d'utiliser la méthode CreateRunspace() du fabricateur runspacefactory de la classe [System.Management.Automation.Runspaces.RunspaceFactory]
+Il y a plusieurs façon de créer et gérer les runspaces mais la façon la plus simple sinon efficace est d'utiliser la méthode CreateRunspace() du fabricateur runspacefactory de la classe [System.Management.Automation.Runspaces.RunspaceFactory]
 
 ```powershell
 # Créer un nouveau Runspace
@@ -92,7 +92,13 @@ PS C:\Users\Dell> Get-Runspace
 
 ```
 
-Le nouveau runspace prend le prochain nom et ID sequentiellement disponible, en occurrence Runspace3 avec ID 3.
+Le nouveau runspace (Runspace3) prend le prochain nom et ID sequentiellement disponible, en occurrence Runspace3 avec ID 3.
+La variable $runspace incarne l'instance ainsi créée.
+
+Pour personnaliser le nom du runspace,
+```powershell
+$runspace.Name = "NewName"
+```
 
 On remarque son état BeforeOpen qui est l'état initial dès la création. Avoir un runspace est bien mais qui peut traiter les instructions, c'est encore mieux ;). Pour cela, on va le mettre à l'état Opened via la commande open().
 
@@ -111,7 +117,7 @@ A l'état Opened, un runspace peut traiter des instructions.
 
 
 ## Exécuter du code dans le Runspace
-On va créer un bloc de script dans un pipline qui contient des instructions
+On va créer un bloc de script dans un pipeline qui contient des instructions
 ```powershell
 $pipeline = [powershell]::Create().AddScript({
     "Hello, Runspace!"
@@ -131,13 +137,13 @@ $runspace.Close()
 $runspace.Dispose()
 ```
 
-## Méthode 2 : Crée un runspace avec les modules `Microsoft.PowerShell.Management` et `Microsoft.PowerShell.Security` chargés
-
+## Création d'un runspace avec argument
+Il est possible de préparer l'environnement d'exécution d'un runspace lors de sa création en lui passant un ensemble de paramètres.
 
 ```powershell
 ## Initialiser l'environnement d'un runspace
 $init = [System.Management.Automation.Runspaces.InitialSessionState]::Create()
-$init | Get-Member
+## $init | Get-Member
 
 $var1 = [System.Management.Automation.Runspaces.SessionStateVariableEntry]::new("Pi", 3.14 , '')
 $var2 = [System.Management.Automation.Runspaces.SessionStateVariableEntry]::new("double", 6 , '')
