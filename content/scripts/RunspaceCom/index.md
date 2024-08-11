@@ -54,6 +54,16 @@ $script1 = {
 }
 
 $runspace1.SessionStateProxy.SetVariable("Script", $script1)
+
+$powershell1 = [powershell]::Create()
+$powershell1.Runspace = $runspace1
+$powershell1.AddScript({
+    $data = "Donnée de Runspace 1"
+    $Queue.Enqueue($data)
+}) | Out-Null
+$handle = $powershell1.BeginInvoke()
+
+
 $runspace1.Invoke()
 $runspace1.Close()
 
@@ -80,33 +90,75 @@ $runspace2 = [runspacefactory]::CreateRunspace()
 $runspace2.Open()
 ```
 ### Création d'une variable partagée
+
 ```powershell
 # Création d'une variable partagée
-$SharedVariable = [ref]@{}
-$runspace1.SessionStateProxy.SetVariable("SharedVariable", $SharedVariable)
-$runspace2.SessionStateProxy.SetVariable("SharedVariable", $SharedVariable)
-```
 
-### Lecture et écriture d'une variable partagée
+$personnage = [hashtable]::Synchronized(@{})
+$personnage.Name = "Qui ?"
+$personnage.Age = 35
+$personnage.Jeton = 5
+```
+On introduit une varible de contrôle pour arrêter ou démarrer les runspaces
+
 ```powershell
-# Runspace 1 : Modification de la variable partagée
-$script1 = {
-    $SharedVariable.Value = "Valeur de Runspace 1"
-}
-$runspace1.SessionStateProxy.SetVariable("Script", $script1)
-$runspace1.Invoke()
-$runspace1.Close()
-
-# Runspace 2 : Lecture de la variable partagée
-$script2 = {
-    $data = $SharedVariable.Value
-    Write-Host "Donnée reçue : $data"
-}
-
-$runspace2.SessionStateProxy.SetVariable("Script", $script2)
-$runspace2.Invoke()
-$runspace2.Close()
+$personnage.Continue = $true  # changer à $false à tout moment pour arrêter l'exécution des runspaces
 ```
+
+{{< callout context="tip" title="Did you know?" icon="outline/rocket" >}}
+Pouvoir afficher des messages sur l'interface du runspace parent (ie Powershell ISE), on introduit la variable d'envrionnement $host dans notre variable partagé
+{{< /callout >}}
+
+```powershell
+$personnage.Affichage = $host  #
+```
+
+Partage des variables dans les sessions de nos runspaces
+$runspace1.SessionStateProxy.SetVariable("personnage", $personnage)
+$runspace2.SessionStateProxy.SetVariable("personnage", $personnage)
+```
+### Lecture et écriture d'une variable partagée depuis des runspaces
+```powershell
+
+# Runspace 1 : Exécution
+$powershell1 = [powershell]::Create()
+$powershell1.Runspace = $runspace1
+$powershell1.AddScript({
+      while($personnage.Continue){
+
+        $personnage.Name = "Alice"
+        $personnage.Affichage.ui.WriteLine(" Name : $($personnage.Name) et Jetons : $($personnage.Jeton)")
+        $personnage.Jeton = $personnage.Jeton + 2
+
+        Start-Sleep -Seconds 3
+       }
+})  | Out-Null
+$handle1 = $powershell1.BeginInvoke()
+```
+Dans le runspace suivant, on va lire la variable en modification dans le runspace1
+```powershell
+# Runspace 2 : Exécution
+$powershell2 = [powershell]::Create()
+$powershell2.Runspace = $runspace2
+$powershell2.AddScript({
+      while($personnage.Continue){
+
+        $personnage.Name = "Bob"
+        $personnage.Affichage.ui.WriteLine(" Name : $($personnage.Name)   et Jetons : $($personnage.Jeton)")
+
+        Start-Sleep -Seconds 3
+       }
+})  | Out-Null
+$handle = $powershell2.BeginInvoke()
+```
+Une fois exécuté, on remarque que le nombre de jetons est incrémenté par le runspace 1 et le runspace 2 affiche en temps réél cette modification. Pour arrêter l'exécution des runspaces, il suffit de briser la boucle grace à l'élément `Continue`
+
+{{< figure
+  src="images/site-runspaceCom-Continue.png"
+  alt="ISE - Arrêt des runspaces"
+  caption="ISE - Arrêt des runspaces"
+>}}
+
 L'utilisation de la file d'attente permet une communication fluide entre les runspaces. Assurez-vous de gérer les cas où la file d'attente est vide ou pleine pour éviter les erreurs potentielles.
 
 ## Conclusion
