@@ -1,12 +1,12 @@
 ---
 title: "Structures de données dans Powershell👋"
-description: "Les structures de données sont un moyen efficace de stocker et de manipuler des données dans PowerShell."
-summary: "You can use blog posts for announcing product updates and features."
+description: ""
+summary: "Les structures de données sont un moyen efficace de stocker et de manipuler des données dans PowerShell."
 date: 2023-09-07T16:27:22+02:00
 lastmod: 2023-09-07T16:27:22+02:00
 draft: false
 weight: 20
-categories: []
+categories: ["Scripts"]
 tags: []
 contributors: []
 pinned: false

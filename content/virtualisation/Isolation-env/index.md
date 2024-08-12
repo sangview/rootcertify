@@ -6,7 +6,8 @@ date: 2023-09-07T16:27:22+02:00
 lastmod: 2023-09-07T16:27:22+02:00
 draft: false
 weight: 50
-categories: ["Technologie", "Citrix"]
+#categories: ["Technologie", "Citrix"]
+categories: ["virtualisation"]
 tags: ["virtualisation", "Citrix", "profils utilisateurs", "isolation", "sécurité", "performance"]
 contributors: []
 pinned: false
