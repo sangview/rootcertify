@@ -19,7 +19,7 @@ seo:
 ---
 
 # Communication entre des runspaces dans PowerShell
-Dans ce tutoriel, nous allons explorer comment mettre en place une communication efficace entre des runspaces en utilisant des files d'attente (queues) pour échanger des données.
+Dans ce tutoriel, nous allons explorer 2 méthodes pour mettre en place une communication efficace entre des runspaces en utilisant des files d'attente (queues) et les hashtables pour échanger des données.
 
 ## 1 - Création d'une file d'attente partagée
 
@@ -34,7 +34,7 @@ $runspace1.Open()
 $runspace2 = [runspacefactory]::CreateRunspace()
 $runspace2.Open()
 ```
-### Création une file d'attente partagée
+### Création d'une file d'attente et partage
 ```powershell
 
 $Queue = [System.Collections.Queue]::Synchronized((New-Object System.Collections.Queue))
@@ -45,16 +45,18 @@ $runspace2.SessionStateProxy.SetVariable("Queue", $Queue)
 
 ```
 
+{{< callout context="tip" title="Affichage dans un runspace?" icon="outline/rocket" >}}
+Pouvoir afficher des messages reçus dans la file d'attente depuis le runspace sur l'interface de notre console ISE (runspace parent), on introduit la variable d'envrionnement $host dans notre runspace
+{{< /callout >}}
+
+```powershell
+$Affichage = $host
+$runspace2.SessionStateProxy.SetVariable("Affichage", $Affichage)
+```
+
 ### Lecture et écriture d'une file d'attente dans un runspace
 ```powershell
-# Runspace 1 : Ajout des données à la file d'attente
-$script1 = {
-    $data = "Donnée de Runspace 1"
-    $Queue.Enqueue($data)
-}
-
-$runspace1.SessionStateProxy.SetVariable("Script", $script1)
-
+# Runspace 1 : Envoi des données vers le runspace2 via la file d'attente
 $powershell1 = [powershell]::Create()
 $powershell1.Runspace = $runspace1
 $powershell1.AddScript({
@@ -62,25 +64,26 @@ $powershell1.AddScript({
     $Queue.Enqueue($data)
 }) | Out-Null
 $handle = $powershell1.BeginInvoke()
+```
 
-
-$runspace1.Invoke()
-$runspace1.Close()
-
-# Runspace 2 : Lecture des données de la file d'attente
-$script2 = {
+```powershell
+# Runspace 2 : Reception des données depuis le runspace1 via la file d'attente
+$powershell2 = [powershell]::Create()
+$powershell2.Runspace = $runspace2
+$powershell2.AddScript({
     $data = $Queue.Dequeue()
     Write-Host "Donnée reçue : $data"
-}
-
-$runspace2.SessionStateProxy.SetVariable("Script", $script2)
-$runspace2.Invoke()
-$runspace2.Close()
-
-
+    $Affichage.ui.WriteLine("Donnée reçue : $data")
+}) | Out-Null
+$handle = $powershell2.BeginInvoke()
 ```
+{{< callout context="note" title="Note" icon="outline/info-circle" >}}
+ La commande Write-Host seule ne peut pas afficher de message sur la console courante (runspace parent) depuis un runspace.
+{{< /callout >}}
+
+
 ## 2 - Utilisation de variables partagées :
-Il est également possible de partager des variables entre les runspaces, mais un attention particulière doit être observée pour éviter les conflits de données.
+Il est également possible de partager des variables entre les runspaces, mais une attention particulière doit être observée pour éviter les conflits de données.
 
 ```powershell
 # Création des runspaces
@@ -96,30 +99,29 @@ $runspace2.Open()
 
 $personnage = [hashtable]::Synchronized(@{})
 $personnage.Name = "Qui ?"
-$personnage.Age = 35
 $personnage.Jeton = 5
 ```
-On introduit une varible de contrôle pour arrêter ou démarrer les runspaces
+On introduit une variable de contrôle pour arrêter ou démarrer les runspaces
 
 ```powershell
 $personnage.Continue = $true  # changer à $false à tout moment pour arrêter l'exécution des runspaces
 ```
 
-{{< callout context="tip" title="Did you know?" icon="outline/rocket" >}}
-Pouvoir afficher des messages sur l'interface du runspace parent (ie Powershell ISE), on introduit la variable d'envrionnement $host dans notre variable partagé
+{{< callout context="tip" title="Affichage dans un runspace?" icon="outline/rocket" >}}
+Comme précédemment, on introduit la variable d'envrionnement $host dans notre variable partagé pour afficher des messages sur l'interface du runspace parent
 {{< /callout >}}
 
 ```powershell
-$personnage.Affichage = $host  #
+$personnage.Affichage = $host
 ```
 
 Partage des variables dans les sessions de nos runspaces
+```powershell
 $runspace1.SessionStateProxy.SetVariable("personnage", $personnage)
 $runspace2.SessionStateProxy.SetVariable("personnage", $personnage)
 ```
 ### Lecture et écriture d'une variable partagée depuis des runspaces
 ```powershell
-
 # Runspace 1 : Exécution
 $powershell1 = [powershell]::Create()
 $powershell1.Runspace = $runspace1
