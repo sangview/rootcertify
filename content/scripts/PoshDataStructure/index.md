@@ -1,5 +1,5 @@
 ---
-title: "Structures de données dans Powershell👋"
+title: "Structures de données dans Powershell"
 description: ""
 summary: "Les structures de données sont un moyen efficace de stocker et de manipuler des données dans PowerShell."
 date: 2023-09-07T16:27:22+02:00
@@ -19,14 +19,11 @@ seo:
   noindex: false # false (default) or true
 ---
 
-
-## Utilisation des structures de données dans PowerShell
-
-PowerShell est un langage de script puissant qui offre un large éventail de fonctionnalités, y compris la prise en charge des structures de données. Les structures de données sont un moyen efficace de stocker et de manipuler des données dans PowerShell.
+Pour user de plein potentiels de PowerShell, apprendre à maitriser les structures de données est une nécessité. Les structures de données sont un moyen efficace de stocker et de manipuler des données dans PowerShell.
 
 ## Types de structures de données
 
-PowerShell prend en charge une variété de structures de données, notamment :
+PowerShell prend en charge une variété de structures de données, comme :
 
 * Tableaux
 * ArrayList
@@ -35,43 +32,49 @@ PowerShell prend en charge une variété de structures de données, notamment :
 
 ### Tableaux
 
-Les tableaux sont une structure de données de base qui stocke une collection d'éléments de même type ou de types différents. Les éléments d'un tableau peuvent être de n'importe quel type, y compris des chaînes, des nombres, des tableaux, etc.
+Les tableaux sont une structure de données de base qui stocke une collection d'éléments de même type ou de types différents. Ces éléments peuvent être de n'importe quel type, y compris des chaînes, des nombres, des tableaux, etc.
 
 ```powershell
  $myArray = @("serveur01", 11, 3.141592, 'A')
 
 ```
-
 Pour accéder à un élément du tableau, on utilise l'index de cet élément. Par exemple, on accède au premier et troisième élément du tableau `myArray`, comme suite :
 
 ```powershell
 $myArray[0]
 $myArray[2]
+
+
 ```
+{{< callout context="note" title="Note" icon="outline/info-circle" >}}
+ La taille des tableaux n'est pas modifiable et en Powershell comme dans la plupart des langages, le premier index des tableaux est le 0
+{{< /callout >}}
+
+
 ### ArrayList
 
-Les ArrayList sont une structure de données similaires aux tableaux, mais elles permettent d'ajouter et de supprimer des éléments plus facilement.
+Les ArrayList sont une structure de données similaires aux tableaux, mais elles permettent d'ajouter et de supprimer des éléments plus facilement grâce à son mode de stockage en mémoire sous forme de liste. Les ArrayList n'ont pas une taille fixe contrairement aux tableaux. Tout comme les tableaux, on peut accéder aux éléments avec leur index.
 
 ```powershell
-PS C:\Windows\system32> $myArrayList = New-Object System.Collections.ArrayList
-PS C:\Windows\system32> $myArrayList.Add("server01")
-PS C:\Windows\system32> $myArrayList.Add("server02")
-PS C:\Windows\system32> $myArrayList.Add("server03")
+$myArrayList = New-Object System.Collections.ArrayList
+$myArrayList.Add("server01")
+$myArrayList.Add("server02")
+$myArrayList.Add("server03")
 
-PS C:\Windows\system32> $myArrayList
+$myArrayList
 server01
 server02
 server03
 
-PS C:\Windows\system32> $myArrayList.Remove("server02")
+$myArrayList.Remove("server02")
 
-PS C:\Windows\system32> $myArrayList
+$myArrayList
 server01
 server03
 
-PS C:\Windows\system32> $myArrayList.Insert(0,"server01")
+$myArrayList.Insert(0,"server01")
 
-PS C:\Windows\system32> $myArrayList
+$myArrayList
 server01
 server01
 server03
@@ -91,7 +94,7 @@ $web = @{
     3.14 = "Pi"
 }
 
-PS C:\Windows\system32> $web["server-web02"].GetType()
+$web["server-web02"].GetType()
 
 IsPublic IsSerial Name                                     BaseType
 -------- -------- ----                                     --------
@@ -99,7 +102,7 @@ True     True     String                                   System.Object
 
 
 
-PS C:\Windows\system32> $web[1].GetType()
+$web[1].GetType()
 
 IsPublic IsSerial Name                                     BaseType
 -------- -------- ----                                     --------
@@ -110,12 +113,16 @@ True     True     Int32                                    System.ValueType
 Pour accéder à une valeur d'une hashtable, on utilise la clé de la valeur. Par exemple, pour accéder à la valeur associée à la clé `server-web02` du hashtable `web`, on utilise la syntaxe suivante :
 
 ```powershell
-PS C:\Windows\system32> $web["server-web02"]
+$web["server-web02"]
 192.168.10.6
 ```
+{{< callout context="tip" title="Vous savez ?" icon="outline/rocket" >}}
+Les hashtables sont très utilisés dans les outils et scripts de configuration des environnements
+{{< /callout >}}
+
+
 ### Hashtable Vs ArrayList
 
-* Hashtable est un type de données `non typé`, ce qui signifie que les clés et les valeurs peuvent être de n'importe quel type. ArrayList est un type de données typé, ce qui signifie que les éléments de la liste doivent être du même type.
 * Hashtable est `thread-safe`, ce qui signifie qu'il peut être utilisé par plusieurs threads en même temps sans risque de corruption des données. ArrayList n'est pas thread-safe.
 Hashtable est plus gourmand en mémoire que ArrayList.
 
@@ -124,20 +131,20 @@ Hashtable est plus gourmand en mémoire que ArrayList.
 
 ### Enumerations
 
-Les enumerations sont une structure de données qui sont utilisées pour représenter un ensemble d'éléments. Les éléments d'une enumeration sont des constantes.
+Les enumerations sont une structure de données qui sont utilisées pour représenter un ensemble d'éléments constants. Les éléments d'une enumeration sont des constantes.
 
-Pour accéder à une valeur d'une enumeration, vous pouvez utiliser son nom. Par exemple, pour accéder à la valeur `Value1` de l'enumeration `MyEnumeration`, vous pouvez utiliser la syntaxe suivante :
+Pour accéder à une valeur d'une enumeration, on peut utiliser son nom. Par exemple, pour accéder à la valeur `ETEINT` de l'enumeration `Etat`, on utilise la syntaxe suivante :
 
 ```powershell
-PS C:\Windows\system32> # Déclaration de l'Enum
+# Déclaration de l'Enum
 Enum Etat {
   ALLUME
   ETEINT
 }
 
 # créer une instance et la stocker dans une var $etat typé pareil
-PS C:\Windows\system32> [Etat]$etat = [Etat]::ALLUME
-PS C:\Windows\system32> $etat = [Etat]::ETEINT
+[Etat]$etat = [Etat]::ALLUME
+$etat = [Etat]::ETEINT
 
 # Vérifier le type de la var
 $etat.GetType()
@@ -149,11 +156,18 @@ switch ($etat)
     "ETEINT" {"Le serveur est éteint"; continue }
 
 }
-
-Le serveur est éteint
-
 ```
-Accès aux valeurs des Enum sous forme d'une constante et un entier
+
+{{< figure
+  src="images/site-data-structures-Enum-1.png"
+  alt="ISE - Arrêt des runspaces"
+  caption="ISE - test d'état"
+>}}
+
+
+
+
+**Accès aux valeurs des Enum sous forme d'une constante et un entier**
 
 
 ```powershell
@@ -178,14 +192,14 @@ ValueName IntValue
 ```
 
 
-## Cas d'usage
+## Quelques Cas d'usage
 
 Voici quelques exemples d'utilisation des structures de données dans PowerShell :
 
 * Pour stocker une liste de noms de fichiers, on peut utiliser un tableau.
 * Pour stocker un ensemble de paramètres d'une application, on peut utiliser une hashtable.
 * Pour stocker une liste d'éléments qui peuvent être ajoutés ou supprimés facilement, on peut utiliser un ArrayList.
-* Pour représenter un ensemble d'éléments, on peut utiliser une enumeration.
+* Pour représenter un ensemble d'éléments constants, on peut utiliser une enumeration.
 
 ## Conclusion
 
