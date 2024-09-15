@@ -1,7 +1,7 @@
 ---
-title: "Les Types de Réseaux Virtuels (vNet) : Cas de VMware Workstation"
+title: "Les Réseaux Virtuels dans VMware Workstation"
 description: ""
-summary: "You can use blog posts for announcing product updates and features."
+summary: "Les type de réseaux virtuels (vNet) dans un environnement VMware Workstation"
 date: 2023-09-07T16:21:44+02:00
 lastmod: 2023-09-07T16:21:44+02:00
 draft: false
@@ -33,18 +33,29 @@ Le réseau Bridged permet aux VMs de se connecter directement au réseau physiqu
 - **Accessibilité Externe** : Les VMs peuvent être accessibles depuis l'extérieur, utile pour des serveurs Web ou des services accessibles publiquement.
 
 **Configuration :**
-Pour configurer un réseau Bridged, accédez aux paramètres de la VM, choisissez le paramètre de réseau et sélectionnez "Bridged". Assurez-vous que la carte réseau physique sélectionnée est connectée à un réseau actif.
+
+{{< callout context="tip" title="Configuration" icon="outline/rocket" >}}
+Pour configurer un réseau, accédez aux paramètres de la VM.
+{{< /callout >}}
+
+{{< img process="fit 889x897" lqip="21x webp q20" loading="eager" fetchpriority="high" src="vnet1.png" alt="Configurer un réseau Bridged" >}}
+
+Choisissez le paramètre de réseau et sélectionnez "Bridged". Assurez-vous que la carte réseau physique sélectionnée est connectée à un réseau actif.
+
+{{< img process="fit 889x897" lqip="21x webp q20" loading="eager" fetchpriority="high" src="bridged.png" alt="Configurer un réseau Bridged" >}}
 
 #### Réseau NAT (Network Address Translation)
 
 Le réseau NAT permet aux VMs de partager l'adresse IP de l'hôte pour accéder à Internet ou à d'autres réseaux externes. Les VMs reçoivent des adresses IP privées et utilisent le mécanisme NAT pour communiquer avec l'extérieur, ce qui cache leur adresse IP interne.
 
 **Cas d'Usage :**
-- **Sécurité** : Limite l'exposition des VMs au réseau public, idéal pour des tests nécessitant un accès Internet sans compromettre la sécurité.
 - **Économie d'Adresses IP** : Utile dans des environnements avec un nombre limité d'adresses IP publiques.
+- **Sécurité** : Limite l'exposition des VMs au réseau public, idéal pour des tests nécessitant un accès Internet sans compromettre la sécurité.
 
 **Configuration :**
 Choisissez l'option "NAT" dans les paramètres réseau de la VM. Par défaut, VMware Workstation utilise `vmnet8` pour les réseaux NAT, avec une passerelle NAT configurée pour gérer le trafic.
+
+{{< img process="fit 889x897" lqip="21x webp q20" loading="eager" fetchpriority="high" src="nat.png" alt="Configurer un réseau NAT" >}}
 
 #### Réseau Host-Only
 
@@ -56,6 +67,8 @@ Le réseau Host-Only est utilisé pour isoler complètement les VMs du réseau e
 
 **Configuration :**
 Dans les paramètres réseau de la VM, sélectionnez "Host-Only". VMware Workstation utilise généralement `vmnet1` pour ce type de réseau, avec une configuration DHCP pour attribuer des adresses IP aux VMs.
+
+{{< img process="fit 889x897" lqip="21x webp q20" loading="eager" fetchpriority="high" src="host-only.png" alt="Configurer un réseau Host-Only" >}}
 
 ### Cas d'Usage Avancés
 

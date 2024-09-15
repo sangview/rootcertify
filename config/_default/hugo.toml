@@ -80,9 +80,13 @@ copyRight = "Copyright (c) 2020-2024 Hyas"
       name = "date"
       weight = 10
 
+
+########## Début : Pour ajouter les mounts nécéssaires à la gestion des images
 [imaging]
   anchor = "Center"
   bgColor = "#ffffff"
   hint = "photo"
   quality = 85
   resampleFilter = "Lanczos"
+
+########## Fin : Pour ajouter les mounts nécéssaires à la gestion des images
